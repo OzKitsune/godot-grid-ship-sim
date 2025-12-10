@@ -30,11 +30,12 @@ public partial class Ship : CharacterBody2D
     [Export] public float MainEnginePower { get; private set; } = 800.0f;
     [Export] public float RotationEnginePower { get; private set; } = 3.0f;
     [Export] public float MaxSpeed { get; private set; } = 500.0f;
-    [Export] public float BrakingFactor { get; private set; } = 0.7f;
+    [Export(PropertyHint.Range, "0, 1")] public float BrakingFactor { get; private set; } = 0.7f;
 
     [ExportCategory("Инерция")]
     [Export] public float AccelerationResponse { get; private set; } = 2.0f;
-    [Export] public float RotationResponse { get; private set; } = 5.0f;
+    [Export] public float RotationAccelerationResponse { get; private set; } = 1.0f;
+    [Export] public float RotationBrakeResponse { get; private set; } = 2.0f;
 
     [ExportCategory("Автопилот - Настройки")]
     [Export] public float ArrivalThreshold = 50.0f;
@@ -180,7 +181,21 @@ public partial class Ship : CharacterBody2D
         _currentForwardThrust = Mathf.Lerp(_currentForwardThrust, _targetForwardThrust, AccelerationResponse * delta);
 
         // Асимптотическое изменение поворота.
-        _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationResponse * delta);
+        // Определяем, нужно ли нам набирать или сбрасывать скорость поворота.
+        float currentRotationAbs = Mathf.Abs(_currentRotationThrust);
+        float targetRotationAbs = Mathf.Abs(_targetRotationThrust);
+
+        // Если текущая скорость поворота больше целевой или целевая равна 0 - сбрасываем быстрее.
+        if (currentRotationAbs > targetRotationAbs || Mathf.Abs(_targetRotationThrust) < 0.01f)
+        {
+            // Быстрая потеря скорости поворота (торможение).
+            _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationBrakeResponse * delta);
+        }
+        else
+        {
+            // Медленный набор скорости поворота (ускорение).
+            _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationAccelerationResponse * delta);
+        }
     }
 
     private void CalculateMovement(float delta)
@@ -191,7 +206,16 @@ public partial class Ship : CharacterBody2D
 
         // Расчёт ускорения вперёд.
         Vector2 forwardVector = Vector2.Up.Rotated(Rotation);
-        float targetSpeed = _currentForwardThrust * MaxSpeed;
+        float targetSpeed;
+
+        if (_targetForwardThrust != 0)
+        {
+            targetSpeed = _currentForwardThrust * MaxSpeed;
+        }
+        else
+        {
+            targetSpeed = _currentForwardThrust * BrakingFactor;
+        }
 
         // Асимптотическое приближение скорости к целевой.
         _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, AccelerationResponse * delta);
