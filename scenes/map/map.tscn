@@ -23,3 +23,4 @@ grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("1_sxf4j")
 LineWidth = 4.0
+FontSize = 8
