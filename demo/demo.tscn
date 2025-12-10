@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bfa5lqstvljww"]
+[gd_scene load_steps=5 format=3 uid="uid://bfa5lqstvljww"]
 
 [ext_resource type="PackedScene" uid="uid://ba4f15elxk641" path="res://scenes/ship/ship.tscn" id="1_d6po2"]
 [ext_resource type="Script" uid="uid://dgsraa5qv3yj0" path="res://demo/Demo.cs" id="1_dar0o"]
 [ext_resource type="PackedScene" uid="uid://golno0p7ebt" path="res://scenes/map/map.tscn" id="2_ytiva"]
+[ext_resource type="Script" uid="uid://c4hbho7xcgo5h" path="res://source/CameraZoom.cs" id="3_j5lb4"]
 
 [node name="Demo" type="Node2D" node_paths=PackedStringArray("Ship", "Map")]
 script = ExtResource("1_dar0o")
@@ -20,6 +21,10 @@ ThrustP = 0.8
 
 [node name="Camera2D" type="Camera2D" parent="Ship"]
 zoom = Vector2(0.5, 0.5)
+script = ExtResource("3_j5lb4")
+_step = 0.05
+_minZoom = 0.2
+_maxZoom = 2.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
