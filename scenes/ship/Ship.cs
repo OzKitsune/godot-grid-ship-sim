@@ -257,7 +257,9 @@ public partial class Ship : CharacterBody2D
     public string GetAutopilotInfo()
     {
         if (!_autopilotEnabled)
+        {
             return "Автопилот: ВЫКЛ";
+        }
 
         var distance = GlobalPosition.DistanceTo(_autopilotTarget);
         var direction = (_autopilotTarget - GlobalPosition).Normalized();
