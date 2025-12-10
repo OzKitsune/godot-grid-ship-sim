@@ -147,17 +147,6 @@ public partial class Ship : CharacterBody2D
         float currentSpeedTowardTarget = Velocity.Dot(direction);
         float thrustOutput = _thrustPID.Update(desiredSpeed, currentSpeedTowardTarget, delta);
         _targetForwardThrust = Mathf.Clamp(thrustOutput, -1.0f, 1.0f);
-
-        //// ===== ТОРМОЖЕНИЕ ПРИ ПРИБЛИЖЕНИИ =====
-
-        //// Если близко к цели - начинаем тормозить
-        //float brakingDistance = CalculateBrakingDistance(currentSpeedTowardTarget);
-        //if (distance < brakingDistance)
-        //{
-        //    // Увеличиваем торможение по мере приближения
-        //    float brakeFactor = 1.0f - (distance / brakingDistance);
-        //    _targetForwardThrust = Mathf.Lerp(_targetForwardThrust, -1.0f, brakeFactor);
-        //}
     }
 
     private float CalculateDesiredSpeed(float distance, float delta)
