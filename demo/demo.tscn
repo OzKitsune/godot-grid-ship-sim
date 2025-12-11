@@ -1,14 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfa5lqstvljww"]
+[gd_scene load_steps=6 format=3 uid="uid://bfa5lqstvljww"]
 
 [ext_resource type="PackedScene" uid="uid://ba4f15elxk641" path="res://scenes/ship/ship.tscn" id="1_d6po2"]
 [ext_resource type="Script" uid="uid://dgsraa5qv3yj0" path="res://demo/Demo.cs" id="1_dar0o"]
 [ext_resource type="PackedScene" uid="uid://golno0p7ebt" path="res://scenes/map/map.tscn" id="2_ytiva"]
 [ext_resource type="Script" uid="uid://c4hbho7xcgo5h" path="res://source/CameraZoom.cs" id="3_j5lb4"]
+[ext_resource type="PackedScene" uid="uid://dmajkeli7mh4w" path="res://scenes/ui/info.tscn" id="5_u10mr"]
 
-[node name="Demo" type="Node2D" node_paths=PackedStringArray("_ship", "_map")]
+[node name="Demo" type="Node2D" node_paths=PackedStringArray("_ship", "_map", "_info")]
 script = ExtResource("1_dar0o")
 _ship = NodePath("Ship")
 _map = NodePath("CanvasLayer/Map")
+_info = NodePath("CanvasLayer/Info")
 
 [node name="Ship" parent="." instance=ExtResource("1_d6po2")]
 MainEnginePower = 160.0
@@ -28,3 +30,5 @@ _maxZoom = 2.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Map" parent="CanvasLayer" instance=ExtResource("2_ytiva")]
+
+[node name="Info" parent="CanvasLayer" instance=ExtResource("5_u10mr")]

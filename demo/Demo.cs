@@ -5,6 +5,7 @@ public partial class Demo : Node2D
 {
 	[Export] private Ship _ship;
     [Export] private Map _map;
+    [Export] private Info _info;
 
     public override void _Ready()
 	{
@@ -15,7 +16,10 @@ public partial class Demo : Node2D
 
     private void OnGridClicked(Vector2 worldPosition)
     {
-        _ship.EnableAutopilot(worldPosition);
+        if (!_ship.EnableAutopilot(worldPosition)) 
+        {
+            _map.Grid.ClearMarker();
+        }
     }
 
     private void OnShipAutopilotDisengaged(bool reachedTarget)
@@ -31,5 +35,7 @@ public partial class Demo : Node2D
     public override void _PhysicsProcess(double delta)
     {
         _map.Grid.UpdateGrid(_ship.GlobalPosition);
+
+        _info.Show([_ship.GetDebugInfo(), _ship.GetAutopilotInfo()]);
     } 
 }
