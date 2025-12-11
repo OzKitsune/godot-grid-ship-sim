@@ -95,7 +95,7 @@ public partial class Grid : ColorRect
                 DrawLine(from, to, color, width);
 
                 // Если приближение камеры слишком маленькое, скрываем минорный текст.
-                if (_camera.Zoom.X <= 0.3 && !isMajor) 
+                if (_camera.Zoom.X <= 0.35 && !isMajor) 
                 {
                     continue;
                 }
@@ -135,7 +135,7 @@ public partial class Grid : ColorRect
                 DrawLine(from, to, color, width);
 
                 // Если приближение камеры слишком маленькое, скрываем минорный текст.
-                if (_camera.Zoom.X <= 0.3 && !isMajor)
+                if (_camera.Zoom.X <= 0.35 && !isMajor)
                 {
                     continue;
                 }
