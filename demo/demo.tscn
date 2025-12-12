@@ -14,10 +14,12 @@ _info = NodePath("CanvasLayer/Info")
 
 [node name="Ship" parent="." instance=ExtResource("1_d6po2")]
 MainEnginePower = 160.0
+RotationEnginePower = 2.0
 MaxSpeed = 200.0
 BrakingFactor = 0.6
-AccelerationResponse = 0.8
-BrakingDistanceMultiplier = 0.65
+AccelerationResponse = 0.4
+RotationAccelerationResponse = 0.6
+BrakingDistanceMultiplier = 1.0
 RotationD = 0.8
 ThrustP = 0.8
 
