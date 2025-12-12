@@ -177,24 +177,28 @@ public partial class Ship : CharacterBody2D
 
     private void ApplyInertiaToControls(float delta)
     {
-        // Асимптотическое изменение тяги.
-        _currentForwardThrust = Mathf.Lerp(_currentForwardThrust, _targetForwardThrust, AccelerationResponse * delta);
-
-        // Асимптотическое изменение поворота.
-        // Определяем, нужно ли нам набирать или сбрасывать скорость поворота.
-        float currentRotationAbs = Mathf.Abs(_currentRotationThrust);
-        float targetRotationAbs = Mathf.Abs(_targetRotationThrust);
-
-        // Если текущая скорость поворота больше целевой или целевая равна 0 - сбрасываем быстрее.
-        if (currentRotationAbs > targetRotationAbs || Mathf.Abs(_targetRotationThrust) < 0.01f)
+        if (_targetForwardThrust != 0)
         {
-            // Быстрая потеря скорости поворота (торможение).
-            _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationBrakeResponse * delta);
+            _currentForwardThrust = Mathf.Lerp(_currentForwardThrust, _targetForwardThrust, AccelerationResponse * delta);
         }
-        else
+
+        if (_targetRotationThrust != 0)
         {
-            // Медленный набор скорости поворота (ускорение).
-            _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationAccelerationResponse * delta);
+            // Определяем, нужно ли нам набирать или сбрасывать скорость поворота.
+            float currentRotationAbs = Mathf.Abs(_currentRotationThrust);
+            float targetRotationAbs = Mathf.Abs(_targetRotationThrust);
+
+            // Если текущая скорость поворота больше целевой или целевая равна 0 - сбрасываем быстрее.
+            if (currentRotationAbs > targetRotationAbs || Mathf.Abs(_targetRotationThrust) < 0.01f)
+            {
+                // Быстрая потеря скорости поворота (торможение).
+                _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationBrakeResponse * delta);
+            }
+            else
+            {
+                // Медленный набор скорости поворота (ускорение).
+                _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationAccelerationResponse * delta);
+            }
         }
     }
 
@@ -207,15 +211,16 @@ public partial class Ship : CharacterBody2D
         // Расчёт ускорения вперёд.
         Vector2 forwardVector = Vector2.Up.Rotated(Rotation);
         float targetSpeed;
+        targetSpeed = _currentForwardThrust * MaxSpeed;
 
-        if (_targetForwardThrust != 0)
-        {
-            targetSpeed = _currentForwardThrust * MaxSpeed;
-        }
-        else
-        {
-            targetSpeed = _currentForwardThrust * BrakingFactor;
-        }
+        //if (_targetForwardThrust != 0)
+        //{
+        //    targetSpeed = _currentForwardThrust * MaxSpeed;
+        //}
+        //else
+        //{
+        //    targetSpeed = _currentForwardThrust * BrakingFactor;
+        //}
 
         // Асимптотическое приближение скорости к целевой.
         _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, AccelerationResponse * delta);
