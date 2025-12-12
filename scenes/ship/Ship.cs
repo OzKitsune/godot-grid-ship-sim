@@ -307,8 +307,6 @@ public partial class Ship : CharacterBody2D
 
     public string GetDebugInfo()
     {
-        string autopilotStatus = _autopilotEnabled ? "ВКЛ" : "ВЫКЛ";
-
         return $"Скорость: {Velocity.Length()}\n" +
                $"Тяга: {_currentForwardThrust}\n" +
                $"Поворот: {_currentRotationThrust}\n" +
