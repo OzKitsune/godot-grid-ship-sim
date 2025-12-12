@@ -25,6 +25,7 @@ public partial class Ship : CharacterBody2D
     private Vector2 _autopilotTarget = Vector2.Zero;
     private PidController _rotationPID;
     private PidController _thrustPID;
+    private bool _autopilotStoping = false;
 
     [ExportCategory("Двигатели")]
     [Export] public float MainEnginePower { get; private set; } = 800.0f;
@@ -64,8 +65,9 @@ public partial class Ship : CharacterBody2D
 
         bool hasManualInput = CheckManualInput();
 
-        if (hasManualInput && _autopilotEnabled)
+        if (hasManualInput)
         {
+            _autopilotStoping = false;
             DisableAutopilot(false);
         }
 
@@ -177,28 +179,16 @@ public partial class Ship : CharacterBody2D
 
     private void ApplyInertiaToControls(float delta)
     {
-        if (_targetForwardThrust != 0)
+        if (_targetForwardThrust != 0 || _autopilotStoping)
         {
             _currentForwardThrust = Mathf.Lerp(_currentForwardThrust, _targetForwardThrust, AccelerationResponse * delta);
         }
 
-        if (_targetRotationThrust != 0)
+        if (_targetRotationThrust != 0 || _autopilotStoping)
         {
-            // Определяем, нужно ли нам набирать или сбрасывать скорость поворота.
-            float currentRotationAbs = Mathf.Abs(_currentRotationThrust);
-            float targetRotationAbs = Mathf.Abs(_targetRotationThrust);
+            _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationAccelerationResponse * delta);
 
-            // Если текущая скорость поворота больше целевой или целевая равна 0 - сбрасываем быстрее.
-            if (currentRotationAbs > targetRotationAbs || Mathf.Abs(_targetRotationThrust) < 0.01f)
-            {
-                // Быстрая потеря скорости поворота (торможение).
-                _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationBrakeResponse * delta);
-            }
-            else
-            {
-                // Медленный набор скорости поворота (ускорение).
-                _currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationAccelerationResponse * delta);
-            }
+            //_currentRotationThrust = Mathf.Lerp(_currentRotationThrust, _targetRotationThrust, RotationBrakeResponse * delta);
         }
     }
 
@@ -268,6 +258,7 @@ public partial class Ship : CharacterBody2D
         _autopilotEnabled = false;
         _autopilotTarget = Vector2.Zero;
 
+        _autopilotStoping = true;
         _targetForwardThrust = 0;
         _targetRotationThrust = 0;
 
