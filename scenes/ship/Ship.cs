@@ -222,7 +222,7 @@ public partial class Ship : CharacterBody2D
 
         // Расчёт итоговой скорости.
         Vector2 newVelocity = forwardVector * _currentSpeed;
-        
+
         // Применение скорости.
         Velocity = newVelocity;
     }
@@ -302,16 +302,16 @@ public partial class Ship : CharacterBody2D
                $"Цель: {_autopilotTarget}\n" +
                $"Дистанция: {distance:F1}\n" +
                $"Угол к цели: {angle:F1}°\n" +
-               $"Скорость: {Velocity.Length():F1}";
+               $"Скорость: {Velocity.Length()}";
     }
 
     public string GetDebugInfo()
     {
         string autopilotStatus = _autopilotEnabled ? "ВКЛ" : "ВЫКЛ";
 
-        return $"Скорость: {Velocity.Length():F1}\n" +
-               $"Тяга: {_currentForwardThrust:F2}\n" +
-               $"Поворот: {_currentRotationThrust:F2}\n" +
+        return $"Скорость: {Velocity.Length()}\n" +
+               $"Тяга: {_currentForwardThrust}\n" +
+               $"Поворот: {_currentRotationThrust}\n" +
                $"Направление: {Mathf.RadToDeg(Rotation):F1}°";
     }
 }
