@@ -44,6 +44,7 @@ public partial class Ship : CharacterBody2D
     [ExportCategory("Автопилот - Настройки")]
     [Export] public float ArrivalThreshold = 50.0f;
     [Export] public float BrakingDistanceMultiplier = 1.5f;
+    [Export] public bool AutopilotStopping = true;
 
     [ExportCategory("Автопилот - PID")]
     [ExportGroup("Поворот")]
@@ -296,6 +297,11 @@ public partial class Ship : CharacterBody2D
 
     private async Task StoppingTask(CancellationToken token)
     {
+        if (!AutopilotStopping) 
+        {
+            return;
+        }
+
         GD.Print("Начало торможения.");
         _stopping = true;
 
