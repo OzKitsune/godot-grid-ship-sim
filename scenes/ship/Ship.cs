@@ -42,20 +42,20 @@ public partial class Ship : CharacterBody2D
     [Export] public float RotationAccelerationResponse { get; private set; } = 1.0f;
 
     [ExportCategory("Автопилот - Настройки")]
-    [Export] public float ArrivalThreshold = 50.0f;
-    [Export] public float BrakingDistanceMultiplier = 1.5f;
-    [Export] public bool AutopilotStopping = true;
+    [Export] public float ArrivalThreshold { get; private set; } = 50.0f;
+    [Export] public float BrakingDistanceMultiplier { get; private set; } = 1.5f;
+    [Export] public bool AutopilotStopping { get; private set; } = true;
 
     [ExportCategory("Автопилот - PID")]
     [ExportGroup("Поворот")]
-    [Export] public float RotationP = 0.8f;
-    [Export] public float RotationI = 0.05f;
-    [Export] public float RotationD = 0.5f;
+    [Export] public float RotationP { get; private set; } = 0.8f;
+    [Export] public float RotationI { get; private set; } = 0.05f;
+    [Export] public float RotationD { get; private set; } = 0.5f;
 
     [ExportGroup("Тяга")]
-    [Export] public float ThrustP = 0.5f;
-    [Export] public float ThrustI = 0.02f;
-    [Export] public float ThrustD = 0.3f;
+    [Export] public float ThrustP { get; private set; } = 0.5f;
+    [Export] public float ThrustI { get; private set; } = 0.02f;
+    [Export] public float ThrustD { get; private set; } = 0.3f;
 
     public override void _Ready()
     {
